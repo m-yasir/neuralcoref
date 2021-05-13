@@ -271,7 +271,8 @@ def get_resolved(doc, clusters):
     resolved = list(tok.text_with_ws for tok in doc)
     for cluster in clusters:
         for coref in cluster:
-            if coref != cluster.main:
+            pos_list = [_doc_.pos_ == 'PRON' for _doc_ in coref.as_doc()]
+            if coref != cluster.main and (False not in pos_list):
                 resolved[coref.start] = cluster.main.text + doc[coref.end-1].whitespace_
                 for i in range(coref.start+1, coref.end):
                     resolved[i] = ""
